@@ -1,91 +1,91 @@
 Log:
-  Level: warning # Log level: none, error, warning, info, debug 
+  Level: warning # 日志级别：none、error、warning、info、debug
   AccessPath: # /etc/XrayR/access.Log
   ErrorPath: # /etc/XrayR/error.log
-DnsConfigPath: # /etc/XrayR/dns.json # Path to dns config, check https://xtls.github.io/config/dns.html for help
-RouteConfigPath: # /etc/XrayR/route.json # Path to route config, check https://xtls.github.io/config/routing.html for help
-InboundConfigPath: # /etc/XrayR/custom_inbound.json # Path to custom inbound config, check https://xtls.github.io/config/inbound.html for help
-OutboundConfigPath: # /etc/XrayR/custom_outbound.json # Path to custom outbound config, check https://xtls.github.io/config/outbound.html for help
+DnsConfigPath: # /etc/XrayR/dns.json # DNS 配置文件路径，可参考 https://xtls.github.io/config/dns.html
+RouteConfigPath: # /etc/XrayR/route.json # 路由配置文件路径，可参考 https://xtls.github.io/config/routing.html
+InboundConfigPath: # /etc/XrayR/custom_inbound.json # 自定义入站配置文件路径，可参考 https://xtls.github.io/config/inbound.html
+OutboundConfigPath: # /etc/XrayR/custom_outbound.json # 自定义出站配置文件路径，可参考 https://xtls.github.io/config/outbound.html
 ConnectionConfig:
-  Handshake: 4 # Handshake time limit, Second
-  ConnIdle: 30 # Connection idle time limit, Second
-  UplinkOnly: 2 # Time limit when the connection downstream is closed, Second
-  DownlinkOnly: 4 # Time limit when the connection is closed after the uplink is closed, Second
-  BufferSize: 64 # The internal cache size of each connection, kB
+  Handshake: 4 # 握手超时时间，单位：秒
+  ConnIdle: 30 # 连接空闲超时时间，单位：秒
+  UplinkOnly: 2 # 下行关闭后的连接保留时间，单位：秒
+  DownlinkOnly: 4 # 上行关闭后的连接保留时间，单位：秒
+  BufferSize: 64 # 每个连接的内部缓存大小，单位：KB
 Nodes:
   -
-    PanelType: "SSpanel" # Panel type: SSpanel, V2board, NewV2board, PMpanel, Proxypanel, V2RaySocks
+    PanelType: "SSpanel" # 面板类型：SSpanel、V2board、NewV2board、PMpanel、Proxypanel、V2RaySocks
     ApiConfig:
       ApiHost: "http://127.0.0.1:667"
       ApiKey: "123"
       NodeID: 41
-      NodeType: V2ray # Node type: V2ray, Vmess, Vless, Shadowsocks, Trojan, Shadowsocks-Plugin
-      Timeout: 30 # Timeout for the api request
-      EnableVless: false # Enable Vless for V2ray Type
-      EnableXTLS: false # Enable XTLS for V2ray and Trojan
-      SpeedLimit: 0 # Mbps, Local settings will replace remote settings, 0 means disable
-      DeviceLimit: 0 # Local settings will replace remote settings, 0 means disable
-      RuleListPath: # /etc/XrayR/rulelist Path to local rulelist file
+      NodeType: V2ray # 节点类型：V2ray、Vmess、Vless、Shadowsocks、Trojan、Shadowsocks-Plugin
+      Timeout: 30 # API 请求超时时间
+      EnableVless: false # 为 V2ray 类型启用 Vless
+      EnableXTLS: false # 为 V2ray 和 Trojan 启用 XTLS
+      SpeedLimit: 0 # 单位 Mbps，本地设置会覆盖远端设置，0 表示禁用
+      DeviceLimit: 0 # 本地设置会覆盖远端设置，0 表示禁用
+      RuleListPath: # /etc/XrayR/rulelist 本地规则列表文件路径
     ControllerConfig:
-      ListenIP: 0.0.0.0 # IP address you want to listen
-      SendIP: 0.0.0.0 # IP address you want to send pacakage
-      UpdatePeriodic: 60 # Time to update the nodeinfo, how many sec.
-      EnableDNS: false # Use custom DNS config, Please ensure that you set the dns.json well
-      DNSType: AsIs # AsIs, UseIP, UseIPv4, UseIPv6, DNS strategy
-      EnableProxyProtocol: false # Only works for WebSocket and TCP
+      ListenIP: 0.0.0.0 # 监听的 IP 地址
+      SendIP: 0.0.0.0 # 发送数据包使用的 IP 地址
+      UpdatePeriodic: 60 # 更新节点信息的间隔，单位：秒
+      EnableDNS: false # 使用自定义 DNS 配置，请确保 dns.json 已正确设置
+      DNSType: AsIs # DNS 策略：AsIs、UseIP、UseIPv4、UseIPv6
+      EnableProxyProtocol: false # 仅对 WebSocket 和 TCP 生效
       AutoSpeedLimitConfig:
-        Limit: 0 # Warned speed. Set to 0 to disable AutoSpeedLimit (mbps)
-        WarnTimes: 0 # After (WarnTimes) consecutive warnings, the user will be limited. Set to 0 to punish overspeed user immediately.
-        LimitSpeed: 0 # The speedlimit of a limited user (unit: mbps)
-        LimitDuration: 0 # How many minutes will the limiting last (unit: minute)
+        Limit: 0 # 触发警告的速度，设为 0 表示禁用自动限速，单位：Mbps
+        WarnTimes: 0 # 连续警告次数达到该值后限制用户，设为 0 表示用户超速后立即限制
+        LimitSpeed: 0 # 被限制用户的限速值，单位：Mbps
+        LimitDuration: 0 # 限速持续时间，单位：分钟
       GlobalDeviceLimitConfig:
-        Enable: false # Enable the global device limit of a user
-        RedisAddr: 127.0.0.1:6379 # The redis server address
-        RedisPassword: YOUR PASSWORD # Redis password
-        RedisDB: 0 # Redis DB
-        Timeout: 5 # Timeout for redis request
-        Expiry: 60 # Expiry time (second)
-      EnableFallback: false # Only support for Trojan and Vless
-      FallBackConfigs:  # Support multiple fallbacks
+        Enable: false # 启用用户全局设备数量限制
+        RedisAddr: 127.0.0.1:6379 # Redis 服务器地址
+        RedisPassword: YOUR PASSWORD # Redis 密码
+        RedisDB: 0 # Redis 数据库编号
+        Timeout: 5 # Redis 请求超时时间
+        Expiry: 60 # 过期时间，单位：秒
+      EnableFallback: false # 仅支持 Trojan 和 Vless
+      FallBackConfigs:  # 支持多个回落配置
         -
-          SNI: # TLS SNI(Server Name Indication), Empty for any
-          Alpn: # Alpn, Empty for any
-          Path: # HTTP PATH, Empty for any
-          Dest: 80 # Required, Destination of fallback, check https://xtls.github.io/config/features/fallback.html for details.
-          ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for dsable
+          SNI: # TLS SNI（服务器名称指示），留空表示任意
+          Alpn: # ALPN，留空表示任意
+          Path: # HTTP 路径，留空表示任意
+          Dest: 80 # 必填，回落目标，详情参考 https://xtls.github.io/config/features/fallback.html
+          ProxyProtocolVer: 0 # 发送 PROXY protocol 版本，0 表示禁用
       CertConfig:
-        CertMode: dns # Option about how to get certificate: none, file, http, tls, dns. Choose "none" will forcedly disable the tls config.
-        CertDomain: "node1.test.com" # Domain to cert
-        CertFile: /etc/XrayR/cert/node1.test.com.cert # Provided if the CertMode is file
+        CertMode: dns # 证书获取方式：none、file、http、tls、dns。选择 "none" 会强制禁用 TLS 配置。
+        CertDomain: "node1.test.com" # 申请证书的域名
+        CertFile: /etc/XrayR/cert/node1.test.com.cert # CertMode 为 file 时提供证书文件路径
         KeyFile: /etc/XrayR/cert/node1.test.com.key
-        Provider: alidns # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
+        Provider: alidns # DNS 证书服务商，完整支持列表见 https://go-acme.github.io/lego/dns/
         Email: test@me.com
-        DNSEnv: # DNS ENV option used by DNS provider
+        DNSEnv: # DNS 服务商使用的环境变量
           ALICLOUD_ACCESS_KEY: aaa
           ALICLOUD_SECRET_KEY: bbb
   # -
-  #   PanelType: "NewV2board" # Panel type: SSpanel, V2board, NewV2board, PMpanel, Proxypanel, V2RaySocks
+  #   PanelType: "NewV2board" # 面板类型：SSpanel、V2board、NewV2board、PMpanel、Proxypanel、V2RaySocks
   #   ApiConfig:
   #     ApiHost: "http://127.0.0.1:668"
   #     ApiKey: "123"
   #     NodeID: 4
-  #     NodeType: Shadowsocks # Node type: V2ray, Shadowsocks, Trojan
-  #     Timeout: 30 # Timeout for the api request
-  #     EnableVless: false # Enable Vless for V2ray Type
-  #     EnableXTLS: false # Enable XTLS for V2ray and Trojan
-  #     SpeedLimit: 0 # Mbps, Local settings will replace remote settings
-  #     DeviceLimit: 0 # Local settings will replace remote settings
+  #     NodeType: Shadowsocks # 节点类型：V2ray、Shadowsocks、Trojan
+  #     Timeout: 30 # API 请求超时时间
+  #     EnableVless: false # 为 V2ray 类型启用 Vless
+  #     EnableXTLS: false # 为 V2ray 和 Trojan 启用 XTLS
+  #     SpeedLimit: 0 # 单位 Mbps，本地设置会覆盖远端设置
+  #     DeviceLimit: 0 # 本地设置会覆盖远端设置
   #   ControllerConfig:
-  #     ListenIP: 0.0.0.0 # IP address you want to listen
-  #     UpdatePeriodic: 10 # Time to update the nodeinfo, how many sec.
-  #     EnableDNS: false # Use custom DNS config, Please ensure that you set the dns.json well
+  #     ListenIP: 0.0.0.0 # 监听的 IP 地址
+  #     UpdatePeriodic: 10 # 更新节点信息的间隔，单位：秒
+  #     EnableDNS: false # 使用自定义 DNS 配置，请确保 dns.json 已正确设置
   #     CertConfig:
-  #       CertMode: dns # Option about how to get certificate: none, file, http, dns
-  #       CertDomain: "node1.test.com" # Domain to cert
-  #       CertFile: /etc/XrayR/cert/node1.test.com.cert # Provided if the CertMode is file
+  #       CertMode: dns # 证书获取方式：none、file、http、dns
+  #       CertDomain: "node1.test.com" # 申请证书的域名
+  #       CertFile: /etc/XrayR/cert/node1.test.com.cert # CertMode 为 file 时提供证书文件路径
   #       KeyFile: /etc/XrayR/cert/node1.test.com.pem
-  #       Provider: alidns # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
+  #       Provider: alidns # DNS 证书服务商，完整支持列表见 https://go-acme.github.io/lego/dns/
   #       Email: test@me.com
-  #       DNSEnv: # DNS ENV option used by DNS provider
+  #       DNSEnv: # DNS 服务商使用的环境变量
   #         ALICLOUD_ACCESS_KEY: aaa
   #         ALICLOUD_SECRET_KEY: bbb
